@@ -82,4 +82,30 @@ public class ClientController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization denied.");
         }
     }
+
+    @GetMapping("api/internal/v1/client/auth")
+    public Boolean authClient(@RequestBody String content){
+        try {
+            HashMap data = new ObjectMapper().readValue(content, HashMap.class);
+
+            String clientId = (String) data.get("clientId");
+
+            if(clientId == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "clientId not specified.");
+            }
+
+            String psw = (String) data.get("password");
+
+            if(psw == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password not specified.");
+            }
+
+            return clientServices.checkAuth(clientId,psw);
+
+        } catch (JsonMappingException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is not valid.");
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is not valid.");
+        }
+    }
 }
