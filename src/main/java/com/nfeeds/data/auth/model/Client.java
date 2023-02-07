@@ -10,11 +10,11 @@ import lombok.*;
 @Entity
 public class Client {
     /**
-     * Numeric id used to identify uniquely a client in the database.
+     * String Id chosen by the client to identify itself during the authentication
      */
     @Id
     @Column(nullable = false)
-    private Integer id;
+    private String clientId;
     /**
      * Type of the client, it can be Sender or Receiver.
      */
