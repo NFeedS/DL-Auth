@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.nfeeds.data</groupId>
 	<artifactId>auth</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>auth</name>
 	<description>Auth module</description>
 	<properties>
