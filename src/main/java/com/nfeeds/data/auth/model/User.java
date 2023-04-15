@@ -8,18 +8,13 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class Client {
+public class User {
     /**
      * String Id chosen by the client to identify itself during the authentication
      */
     @Id
     @Column(nullable = false)
-    private String clientId;
-    /**
-     * Type of the client, it can be Sender or Receiver.
-     */
-    @Column(nullable = false)
-    private ClientType type;
+    private String id;
     /**
      * Random bytes generated at the creation of the client, used for authentication.
      */
