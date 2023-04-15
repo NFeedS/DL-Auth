@@ -10,20 +10,17 @@ import lombok.*;
 @Table(name = "\"user\"")
 @Entity
 public class User {
-    /**
-     * String Id chosen by the client to identify itself during the authentication
-     */
+
+    /* String Id chosen by the client to identify itself during the authentication */
     @Id
     @Column(nullable = false)
     private String id;
-    /**
-     * Random bytes generated at the creation of the client, used for authentication.
-     */
+
+    /* Random bytes generated at the creation of the client, used for authentication. */
     @Column(nullable = false)
     private String salt;
-    /**
-     * Password of the client hashed together with the salt, used for authentication.
-     */
+
+    /* Password of the client hashed together with the salt, used for authentication. */
     @Column(nullable = false)
     private String hashpsw;
 }
