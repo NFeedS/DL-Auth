@@ -30,13 +30,8 @@ public class AuthController {
     public AuthController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-    @Operation(summary = "Create a new user entry.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User created."),
-            @ApiResponse(responseCode = "500", description = "Body was not parsable."),
-    })
-    @PostMapping("")
+    
+    @PostMapping("/")
     public void newUser(@RequestBody String body) {
         try {
             var newUser = new ObjectMapper().readValue(body, User.class);
@@ -45,23 +40,12 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body not parsable to User");
         }
     }
-
-    @Operation(summary = "Get all the users.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
-    })
-    @GetMapping("")
+    
+    @GetMapping("/")
     public List<User> getUsers() {
-        var ret = new ArrayList<User>();
-        userRepository.findAll().forEach(ret::add);
-        return ret;
+        return userRepository.findAll();
     }
-
-    @Operation(summary = "Get a user by id.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User found.", useReturnTypeSchema = true),
-            @ApiResponse(responseCode = "404", description = "User not found.", useReturnTypeSchema = true),
-    })
+    
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") String id) {
         var user = userRepository.findById(id);
@@ -72,11 +56,7 @@ public class AuthController {
 
         return user.get();
     }
-
-    @Operation(summary = "Delete a user.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "User deleted.", useReturnTypeSchema = true),
-    })
+    
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") String id) {
         userRepository.deleteById(id);
