@@ -1,38 +1,28 @@
 package com.nfeeds.data.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nfeeds.data.auth.model.User;
 import com.nfeeds.data.auth.repository.UserRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.commons.logging.Log;
-import org.springframework.data.repository.query.Param;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.Console;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+@Log4j2
 @RestController
+@AllArgsConstructor
 @RequestMapping("api/v1/users")
 public class AuthController {
 
     private final UserRepository userRepository;
-
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
     
     @PostMapping("/")
     public void newUser(@RequestBody String body) {
+        log.debug(this.getClass().getSimpleName() + " - newUser");
         try {
             var newUser = new ObjectMapper().readValue(body, User.class);
             userRepository.save(newUser);
@@ -43,22 +33,19 @@ public class AuthController {
     
     @GetMapping("/")
     public List<User> getUsers() {
+        log.debug(this.getClass().getSimpleName() + " - getUsers");
         return userRepository.findAll();
     }
     
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") String id) {
-        var user = userRepository.findById(id);
-
-        if (user.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
-        }
-
-        return user.get();
+        log.debug(this.getClass().getSimpleName() + " - getUser");
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
     }
     
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") String id) {
+        log.debug(this.getClass().getSimpleName() + " - deleteUser");
         userRepository.deleteById(id);
     }
 }
