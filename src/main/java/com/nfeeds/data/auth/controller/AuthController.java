@@ -21,6 +21,7 @@ public class AuthController {
     private final UserRepository userRepository;
     
     @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
     public void newUser(@RequestBody String body) {
         log.debug(this.getClass().getSimpleName() + " - newUser");
         try {
